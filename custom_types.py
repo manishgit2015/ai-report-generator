@@ -33,6 +33,21 @@ class ReportGeneratorWorkflowState(BaseModel):
         default=None,
         description="The high-level topic provided by the user for the report."
     )
+    requirements: str = Field(
+        default="",
+        description="The high-level Additional requirements or constraints for the report."
+    )
+    target_word_count: int = Field(
+        default=1200,
+        description="Target word count for the report."
+    )
+    max_iterations: int = Field(
+        default=1,
+        description="Maximum number of reflection iterations."
+    )
+    
+    
+    requirements: Additional requirements or constraints
     
     sections_ouline: Optional[List[SectionOutLine]] = Field(
         default=None,
