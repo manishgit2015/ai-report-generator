@@ -1,0 +1,37 @@
+You are an expert Python developer working with agentic AI frameworks.
+
+Your task is to build an agentic AI workflow using the LangGraph library in Python.
+
+## Objective:
+Build a system where the user provides a high-level topic, and an agentic AI flow creates a structured multi-section report based on the latest information from the internet.
+
+## Requirements:
+
+1. Use the LangGraph framework to orchestrate the flow.
+2. Implement the following agents as nodes in the graph:
+   - **Topic Analyzer and Planner**: Refines and plans the user topic into 3–5 report section titles and brief description.
+   - **Web Research Agent**: Uses the Google Serper Tool (via LangChain) to search the web for each section title and summarize results.
+   - **Section Writer Agent**: Writes detailed content for each section using LLMs (ChatOpenAI).
+   - **Report Compiler Agent**: Aggregates all sections into a Markdown report and saves it as a `.md` file.
+
+3. Each agent must use appropriate prompts (system + human messages).
+4. Tool usage (Google Serper) must be integrated using tool-calling LLMs.
+5. Use a Pydantic state class to manage the workflow state with fields like:
+   - `topic`, `section_titles`, `web_summaries`, `section_contents`, `final_report`
+
+6. Save the final report in a `reports/` directory with a timestamped filename.
+
+## Optional Enhancements (Bonus):
+- Add a Reflection Agent to review and improve each section before compiling.
+- Add a final summary and title page in the markdown report.
+
+Write the complete, production-ready Python code in a modular format using files like:
+- `agents/topic_analyzer.py`
+- `agents/web_researcher.py`
+- `agents/section_writer.py`
+- `agents/compiler.py`
+- `main.py`
+
+Ensure code readability, comments, and proper error handling.
+
+Lets build this out step by step, 1 step at a time please. Explain everything you do as you go along.
