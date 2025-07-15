@@ -16,6 +16,8 @@ class TopicAnalyzer:
              well-structured report section titles, each with a brief, clear description of what
              that section will cover. Ensure the sections are logical, comprehensive, and cover
              different aspects of the main topic.
+            
+             
              Provide the output as a JSON array of objects, where each object has 'title' and 'description' keys.
 
              Example Output:
@@ -30,12 +32,21 @@ class TopicAnalyzer:
                 }}
              ]
              """),
-            ("human", "User topic: {topic}")
+            ("human", """
+             User topic: {topic} 
+             
+             Below are the specfic requirements for the report which you should consider while generating the report plan:
+             {requirements}
+             
+             Create the report plan considering the targeted Audience of the report as: 
+             {target_audience}
+             """),
         ])
         self.parser = JsonOutputParser(pydantic_object=List[SectionOutLine])
         
-        
-    def analyze_topic(self, topic: str) -> List[SectionOutLine]:
+    
+    def analyze_topic(self, topic: str,requirements:str,
+                      target_audience:str) -> List[SectionOutLine]:
         """_summary_
 
          Args:
@@ -47,7 +58,8 @@ class TopicAnalyzer:
         """
         try:
             chain = self.prompt | self.llm | self.parser
-            response = chain.invoke({"topic": topic})
+            response = chain.invoke({"topic": topic,"requirements": requirements,
+                                     "target_audience" : target_audience})
             return response
         except Exception as e:
             print(f"Error during topic analysis: {e}")

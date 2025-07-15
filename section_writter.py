@@ -45,7 +45,8 @@ class SectionWriter:
                 3. **Key Insights**: Important findings, trends, or developments
                 4. **Conclusion**: Summary of main points and implications
 
-
+             
+             
              Format the output in Markdown. Do NOT include the section title as a Markdown heading (e.g., # Title).
              Just provide the raw content for the section.
              """,
@@ -60,7 +61,13 @@ class SectionWriter:
                     {description}
                     
                    **Research Summary to Use**:
-                     {web_summary}"
+                     {web_summary}
+                     
+                   ** Target Audience of the section : 
+                     {target_audience}
+                     
+                   ** Sources (for citation/reference): 
+                     {sources}
                      """,
                 ),
             ]
@@ -68,7 +75,9 @@ class SectionWriter:
         self.parser = StrOutputParser()
 
     async def write_section(
-        self, title: str, description: str, web_summary: str
+        self, title: str, description: str, web_summary: str,
+        target_audience: str = "general audience",
+        sources=None
     ) -> Section:
         """
         Writes the detailed content for a single report section.
@@ -93,8 +102,14 @@ class SectionWriter:
                     "title": title,
                     "description": description,
                     "web_summary": web_summary,
+                    "sources": "\n".join(f"- [{url}]({url})" for url in (sources or [])),
+                    "target_audience": target_audience
                 }
             )
+            # Optionally, append a References section
+            if sources:
+                content += "\n\n**References:**\n" + "\n".join(f"- [{url}]({url})" for url in sources)
+            
             print(
                 f"****Content for section '{title}': {content[:100]}..."
             )  # Print first 100 chars
@@ -106,6 +121,7 @@ class SectionWriter:
 
     async def write_all_sections(
         self, section_details: List[Dict[str, str]]
+        ,target_audience:str
     ) -> List[Section]:
         """
         Writes detailed content for all given report sections.
@@ -126,11 +142,14 @@ class SectionWriter:
             title = section.get("title", "Not specified")
             description = section.get("description", "Not specified")
             web_summary = section.get("web_summary", "Not specified")
+            sources = section.get("sources", None)
 
             print(f"  Writing content for section: '{title}'...")
             task = asyncio.create_task(
                 self.write_section(
-                    description, description, web_summary
+                    title=title, description=description, 
+                    web_summary=web_summary,target_audience=target_audience,
+                    sources=sources
                 )
             )
             tasks.append(task)

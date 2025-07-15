@@ -15,6 +15,7 @@ class SectionWebSearchResult(BaseModel):
     """
     title: str = Field(..., description="The title of the search result")
     web_summary: str = Field(..., description="A summarized string of the search results")
+    sources: Optional[List[str]] = Field(default=None, description="List of citation URLs for the summary")
     
 class Section(BaseModel):
     """
@@ -34,22 +35,22 @@ class ReportGeneratorWorkflowState(BaseModel):
         description="The high-level topic provided by the user for the report."
     )
     requirements: str = Field(
-        default="",
+        default="Standard report requirements",
         description="The high-level Additional requirements or constraints for the report."
     )
+    target_audience: Optional[str] = Field(
+        default="general audience",
+        description="The intended audience for the report (e.g., 'technical experts', 'general audience', 'business executives','Academic tone and style')."
+    )
+    
     target_word_count: int = Field(
         default=1200,
         description="Target word count for the report."
     )
-    max_iterations: int = Field(
-        default=1,
-        description="Maximum number of reflection iterations."
-    )
+   
     
     
-    requirements: Additional requirements or constraints
-    
-    sections_ouline: Optional[List[SectionOutLine]] = Field(
+    sections_outline: Optional[List[SectionOutLine]] = Field(
         default=None,
         description="A list of SectionOutLine, where each section out line contains 'title' and 'description' for a report section."
     )

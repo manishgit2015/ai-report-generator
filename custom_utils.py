@@ -20,8 +20,9 @@ class CustomUtils:
             merged_dict.append({
                 "title": outline.title,
                 "description": outline.description,
-                "web_summary": summary_lookup.get(title_key, None)
-            })
+                "web_summary": summary_lookup.get(title_key, None),
+                "sources": next((sr.sources for sr in search_results if sr.title.strip().lower() == title_key), None)
+              })
         print(f"****Merged {len(merged_dict)} sections with web summaries.")
         for item in merged_dict:
             print(f"Title: {item['title']}, Description: {item['description']}, Web Summary: {item['web_summary'][:100] if item['web_summary'] else 'No summary'}...")

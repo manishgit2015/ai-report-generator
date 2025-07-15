@@ -59,6 +59,10 @@ class WebResearcher:
         try:
             # Perform the search using the tool
             search_results = self.tool.run(query)
+            # Extract URLs (assuming search_results is a dict with 'results' as a list of dicts)
+            urls = []
+            if isinstance(search_results, dict) and "results" in search_results:
+                urls = [item.get("link") for item in search_results["results"] if "link" in item]
 
             # Create a summarization chain
             summarization_chain = (
@@ -74,7 +78,8 @@ class WebResearcher:
             
             sectionWebSearchResult = SectionWebSearchResult(
                 title=title,
-                web_summary=web_summary)
+                web_summary=web_summary,
+                sources=urls)
             # print(
             #     f"  Summary for '{sectionWebSearchResult.title}': {sectionWebSearchResult.web_summary[:100]}..."
             # )  # Print first 100 chars of web_summary
