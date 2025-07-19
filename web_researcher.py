@@ -75,7 +75,8 @@ class WebResearcher:
             web_summary = summarization_chain.invoke(
                 {"query": query, "results": search_results}
             )
-            
+            print(f"title is {title}")
+            print(f"web_summary: {web_summary}")
             sectionWebSearchResult = SectionWebSearchResult(
                 title=title,
                 web_summary=web_summary,
